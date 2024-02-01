@@ -47,9 +47,9 @@ class JiraCloud(object):
             "qsh": get_query_hash(path, method.upper(), url_params),
         }
         encoded_jwt = jwt.encode(jwt_payload, self.shared_secret)
-        params = dict(jwt=encoded_jwt, **(url_params or {}))
+        headers = dict(Authorization="JWT " + encoded_jwt)
         request_spec = kwargs.copy()
-        request_spec.update(dict(method=method, path=path, data=data, params=params))
+        request_spec.update(dict(method=method, path=path, data=data, headers=headers))
         return request_spec
 
     def user_id_field(self):
